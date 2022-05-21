@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using TelekomNevaSvyazWpfApp.Services;
 using TelekomNevaSvyazWpfApp.Views.Pages;
 
 namespace TelekomNevaSvyazWpfApp
@@ -8,9 +9,13 @@ namespace TelekomNevaSvyazWpfApp
     /// </summary>
     public partial class App : Application
     {
-        protected override async void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            Ioc.Register<MessageBoxService>();
+            Ioc.Register<WindowService>();
+
             NavigationView navigationView = new NavigationView
             {
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,

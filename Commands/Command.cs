@@ -14,6 +14,8 @@ namespace TelekomNevaSvyazWpfApp.Commands
             this.canExecute = canExecute;
         }
 
+        public Command(Action<object> execute): this(execute, null) { }
+
         public event EventHandler CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
