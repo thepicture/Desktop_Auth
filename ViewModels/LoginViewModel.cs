@@ -138,8 +138,8 @@ namespace TelekomNevaSvyazWpfApp.ViewModels
             {
                 if (entities.Employees.Any(e => e.Phone == Phone && e.Password == Password))
                 {
-                    object result = WindowService.Open<SmsCodeViewModel>();
-                    CurrentGeneratedCode = ((dynamic)result).GeneratedCode;
+                    dynamic result = WindowService.Open<SmsCodeViewModel>();
+                    CurrentGeneratedCode = result.GeneratedCode;
                     StartTimerAsync();
                     IsSmsCodeSent = true;
                 }
@@ -177,6 +177,14 @@ namespace TelekomNevaSvyazWpfApp.ViewModels
 
         private async void EnterCodeAsync(object commandParameter)
         {
+            using (TelekomNevaSvyazBaseEntities entities = new TelekomNevaSvyazBaseEntities())
+            {
+                if (!entities.Employees.Any(e => e.Phone == Phone && e.Password == Password))
+                {
+                    await MessageBoxService.InformErrorAsync("Вы ввели неправильный пароль");
+                    return;
+                }
+            }
             if (CurrentGeneratedCode == SmsCode)
             {
                 IsCanSignIn = true;
